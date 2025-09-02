@@ -7,7 +7,9 @@ macro_rules! lazy_motd {
         use ::termcolor::WriteColor;
         let print_motd = || -> ::std::io::Result<()> {
             let mut stdout = ::termcolor::StandardStream::stdout(::termcolor::ColorChoice::Auto);
-            let pkg_name = if $bin_name != "" {
+            let pkg_name = if $bin_name == "None" {
+                env!("CARGO_BIN_NAME")
+            } else if $bin_name != "" {
                 $bin_name
             } else {
                 env!("CARGO_PKG_NAME")
@@ -21,7 +23,11 @@ macro_rules! lazy_motd {
             write!(&mut stdout, "  ▲ {} {}", pkg_name, pkg_version)?;
             stdout.reset()?;
             if $build_info != "" && $build_info != "None" {
-                write!(&mut stdout, " {}", $build_info)?;
+                if $build_info.starts_with("(") {
+                    write!(&mut stdout, " {}", $build_info)?;
+                } else {
+                    write!(&mut stdout, " ({})", $build_info)?;
+                }
             }
             writeln!(&mut stdout)?;
             writeln!(&mut stdout, "  - Timestamp: {}", timestamp)?;
@@ -33,12 +39,12 @@ macro_rules! lazy_motd {
         }
     }};
     () => {
-        $crate::lazy_motd!(bin = "", build = "(Preview)");
+        $crate::lazy_motd!(bin = "", build = "Preview");
     };
     (build=$build_info:literal) => {
         $crate::lazy_motd!(bin = "", build = $build_info);
     };
     (bin=$bin_name:literal) => {
-        $crate::lazy_motd!(bin = $bin_name, build = "(Preview)");
+        $crate::lazy_motd!(bin = $bin_name, build = "Preview");
     };
 }
