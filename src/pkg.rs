@@ -17,10 +17,15 @@ macro_rules! resolve_pkg_name {
     };
 }
 
-pub fn print_motd(pkg_name: &str, build_info: &str) -> std::io::Result<()> {
+pub fn print_motd(pkg_name: &str, build_info: &str, timestamp: &str) -> std::io::Result<()> {
     let mut stdout = StandardStream::stdout(ColorChoice::Auto);
     let pkg_version = env!("CARGO_PKG_VERSION");
-    let timestamp = Local::now().format("%Y-%m-%d %H:%M:%S");
+    let ts_string = if timestamp == "None" {
+        String::new()
+    } else {
+        Local::now().format("%Y-%m-%d %H:%M:%S").to_string()
+    };
+
     writeln!(&mut stdout)?;
     stdout.set_color(ColorSpec::new().set_fg(Some(Color::Magenta)))?;
     write!(&mut stdout, "  ▲ {} {}", pkg_name, pkg_version)?;
@@ -33,7 +38,9 @@ pub fn print_motd(pkg_name: &str, build_info: &str) -> std::io::Result<()> {
         }
     }
     writeln!(&mut stdout)?;
-    writeln!(&mut stdout, "  - Timestamp: {}", timestamp)?;
+    if !ts_string.is_empty() {
+        writeln!(&mut stdout, "  - Timestamp: {}", ts_string)?;
+    }
     writeln!(&mut stdout)?;
     Ok(())
 }
