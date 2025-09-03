@@ -113,7 +113,7 @@ dependencies = [
 
 [[package]]
 name = "lazy-motd"
-version = "1.0.7"
+version = "1.0.8"
 dependencies = [
  "chrono",
  "machine-uid",
