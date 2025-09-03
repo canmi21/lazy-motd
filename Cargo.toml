@@ -3,6 +3,10 @@ name = "lazy-motd"
 version = "1.0.6"
 edition = "2024"
 
+[[example]]
+name = "demo"
+path = "examples/demo.rs"
+
 [dependencies]
 chrono = "0.4"
 machine-uid = "0.5"
