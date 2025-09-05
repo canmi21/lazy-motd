@@ -37,8 +37,11 @@ macro_rules! lazy_motd {
             $crate::pkg::capitalize_first(env!("CARGO_PKG_NAME"))
         };
 
+        let pkg_version = env!("CARGO_PKG_VERSION");
+
         if let Err(e) = $crate::pkg::print_motd(
-            &final_pkg_name, // Pass the processed name
+            &final_pkg_name,
+            pkg_version,
             build.unwrap_or("Preview"),
             $crate::pkg::MotdOptions {
                 mode,
