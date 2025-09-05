@@ -23,9 +23,13 @@ pub fn capitalize_first(s: &str) -> String {
     }
 }
 
-pub fn print_motd(pkg_name: &str, build_info: &str, opts: MotdOptions) -> std::io::Result<()> {
+pub fn print_motd(
+    pkg_name: &str,
+    pkg_version: &str,
+    build_info: &str,
+    opts: MotdOptions,
+) -> std::io::Result<()> {
     let mut stdout = StandardStream::stdout(ColorChoice::Auto);
-    let pkg_version = env!("CARGO_PKG_VERSION");
 
     writeln!(&mut stdout)?;
     stdout.set_color(ColorSpec::new().set_fg(Some(Color::Magenta)))?;
