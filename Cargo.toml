@@ -1,6 +1,6 @@
 [package]
 name = "lazy-motd"
-version = "1.0.8"
+version = "1.0.9"
 edition = "2024"
 description = "The perfect MOTD for the elegantly lazy developer. Maximum style, minimal effort."
 license = "MIT"
